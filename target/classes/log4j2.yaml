@@ -1,0 +1,73 @@
+Configuration:
+  packages: "com.epam.log4j"
+  name: log4j2_Config
+  properties:
+    property:
+      name: log-path
+      value: log
+  #----------------------------------------------------
+  appenders:
+    Console:
+      name: Console_Appender
+      PatternLayout:
+        Pattern: "%highlight{%-5level}{Fatal=bg_red} %style{%date{yyyy-MM-ddHH:mm:ss.SSS}}{blue}%class{1}:%L - %highlight{%msg} %xEx{short}%n"
+      Filters:
+        ThresholdFilter:
+          level: warn
+          onMatch: DENY
+          onMismatch: NEUTRAL
+    File:
+      name: rootLogFile1.log
+      fileName: ${log-path}/rootFile1.log
+      PatternLayout:
+        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg%xEx{short}%n"
+    RollingFile:
+      name: rolFile2
+      fileName: ${log-path}/rollingFile2.log
+      filePattern: ${log-path}/%d{yyyy-MM-dd}/rolFile2%d{yyyy-MM-dd-hh-mm}.log
+      PatternLayout:
+        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg%xEx{short}%n"
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 1 KB
+    SMS:
+      name: SMSsender
+      PatternLayout:
+        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss} - %msg %xEx{short}"
+    Async:
+      name: AsyncSMS
+      AppenderRef:
+        ref: SMSsender
+
+    SMTP:
+      name: MailAppender
+      subject: "Error Log"
+      to: "urasav9@gmail.com"
+      from: "ura.sav@gmail.com"
+      smtpHost: "smtp.gmail.com"
+      smtpPort: 465
+      smtpProtocol: smtps
+      smtpUsername: "urasav9@gmail.com"
+      smtpPassword: "09012001"
+      bufferSize: 512
+      HTMLLayout:
+        charset: "UTF-8"
+        title: "Logs from Savchenko project"
+  Loggers:
+    Root:
+      level: all
+      AppenderRef:
+        - ref: rootLogFile1.log
+          level: info
+        - ref: rolFile2
+          level: warn
+    Logger:
+      - name: com.epam.log4j
+        level: all
+        AppenderRef:
+          - ref: Console_Appender
+            level: info
+          - ref: MailAppender
+            level: error
+          - ref: AsyncSMS
+            level: fatal

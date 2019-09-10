@@ -1,0 +1,5 @@
+2019-09-10 21:06:00 DEBUG This is a debug message
+2019-09-10 21:06:00 INFO  This is an info message
+2019-09-10 21:06:00 WARN  This is a warn message
+2019-09-10 21:06:00 ERROR This is an error message
+2019-09-10 21:06:00 FATAL This is a fatal message

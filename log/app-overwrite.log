@@ -1,0 +1,5 @@
+DEBUG 2019-09-10 21:07:37,455 Main.main() - This is a debug message
+INFO  2019-09-10 21:07:37,466 Main.main() - This is an info message
+WARN  2019-09-10 21:07:37,466 Main.main() - This is a warn message
+ERROR 2019-09-10 21:07:37,469 Main.main() - This is an error message
+FATAL 2019-09-10 21:07:37,469 Main.main() - This is a fatal message
