@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%-5level %d{DEFAULT} %c{1}.%M() - %msg%n%throwable{short.lineNumber}
+        </Property>
+        <Property name="LOG_PATTERN_TEST">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n
+        </Property>
+        <Property name="APP_LOG_ROOT">C:\firstCourse\task03_log4j\log</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+        </Console>
+        <!--not overwritten file -->
+        <File name="MyFile" fileName="${APP_LOG_ROOT}/app.log" append="true">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+        </File>
+
+        <File name="overwriteFile" fileName="${APP_LOG_ROOT}/app-overwrite.log" append="false">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+
+        </File>
+        <!--overwritten file every day -->
+        <RollingFile name="infoLog" fileName="${APP_LOG_ROOT}/app-info.log"
+                     filePattern="${APP_LOG_ROOT}/app-info-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile
+                name="rollingFile"
+                fileName="${APP_LOG_ROOT}/application.log"
+                filePattern="${APP_LOG_ROOT}/application-%d{yyyy-MM-dd}-%i.log"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+
+        <Logger name="com.epam.log4j" additivity="false" level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="infoLog"/>
+            <AppenderRef ref="MyFile"/>
+            <AppenderRef ref="overwriteFile"/>
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
